@@ -193,7 +193,7 @@ namespace ReadStation.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
@@ -220,7 +220,7 @@ namespace ReadStation.Migrations
                         {
                             t.HasCheckConstraint("CH_User_Email", "EMAIL LIKE '%@___%.COM'");
 
-                            t.HasCheckConstraint("CH_User_Phone", "Phone LIKE '00------------'");
+                            t.HasCheckConstraint("CH_User_Phone", "Phone LIKE '00%' AND LEN(Phone) = 14");
                         });
                 });
 

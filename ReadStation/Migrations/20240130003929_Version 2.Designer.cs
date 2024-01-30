@@ -12,8 +12,8 @@ using ReadStation.Context;
 namespace ReadStation.Migrations
 {
     [DbContext(typeof(ReadStationDbContext))]
-    [Migration("20240130000133_vesion 1 ")]
-    partial class vesion1
+    [Migration("20240130003929_Version 2")]
+    partial class Version2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -196,7 +196,7 @@ namespace ReadStation.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
@@ -223,7 +223,7 @@ namespace ReadStation.Migrations
                         {
                             t.HasCheckConstraint("CH_User_Email", "EMAIL LIKE '%@___%.COM'");
 
-                            t.HasCheckConstraint("CH_User_Phone", "Phone LIKE '00------------'");
+                            t.HasCheckConstraint("CH_User_Phone", "Phone LIKE '00%' AND LEN(Phone) = 14");
                         });
                 });
 

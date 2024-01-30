@@ -13,9 +13,11 @@ namespace ReadStation.Models.EntityConfigurations
             builder.Property(x => x.IsActive).HasDefaultValue(true);
             builder.Property(x=>x.FullName).HasMaxLength(100);
             builder.Property(x => x.Age).HasDefaultValue(18);
+            builder.Property(x => x.Phone).HasColumnType("nvarchar(14)");
             builder.HasIndex(x => x.Email).IsUnique();
             builder.HasIndex(x => x.Phone).IsUnique();
-            builder.ToTable(x => x.HasCheckConstraint("CH_User_Phone", "Phone LIKE '00------------'"));
+            builder.ToTable(x => x.HasCheckConstraint("CH_User_Phone", "Phone LIKE '00%' AND LEN(Phone) = 14"));
+
             builder.ToTable(x => x.HasCheckConstraint("CH_User_Email", "EMAIL LIKE '%@___%.COM'"));
             builder.Property(u => u.Gender).HasConversion<string>();
 

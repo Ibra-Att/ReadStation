@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ReadStation.Migrations
 {
     /// <inheritdoc />
-    public partial class vesion1 : Migration
+    public partial class Version2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -110,7 +110,7 @@ namespace ReadStation.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(14)", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false, defaultValue: 18),
                     Birthdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -126,7 +126,7 @@ namespace ReadStation.Migrations
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
                     table.CheckConstraint("CH_User_Email", "EMAIL LIKE '%@___%.COM'");
-                    table.CheckConstraint("CH_User_Phone", "Phone LIKE '00------------'");
+                    table.CheckConstraint("CH_User_Phone", "Phone LIKE '00%' AND LEN(Phone) = 14");
                     table.ForeignKey(
                         name: "FK_User_Department_DepartmentId",
                         column: x => x.DepartmentId,
