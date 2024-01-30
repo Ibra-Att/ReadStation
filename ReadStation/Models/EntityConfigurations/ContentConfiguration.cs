@@ -8,7 +8,12 @@ namespace ReadStation.Models.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Content> builder)
         {
-            throw new NotImplementedException();
+            builder.ToTable("Content");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.IsActive).HasDefaultValue(true);
+            builder.Property(x => x.Name).HasMaxLength(50);
+            builder.Property(x => x.Author).HasMaxLength(50);
+
         }
     }
 }

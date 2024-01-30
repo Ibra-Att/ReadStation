@@ -8,7 +8,14 @@ namespace ReadStation.Models.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<UserSubscription> builder)
         {
-            throw new NotImplementedException();
+             builder.ToTable("UserSubscription");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.IsActive).HasDefaultValue(true);
+
+
+            builder.ToTable(x => x.HasCheckConstraint("CH_UserSubscription_NetPrice", "NetPrice>= 0"));
+            builder.ToTable(x => x.HasCheckConstraint("CH_UserSubscription_DurationInDays", "DurationInDays<= 365"));
+            builder.ToTable(x => x.HasCheckConstraint("CH_UserSubscription_Promotion", "Promotion<=0.50 "));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using static ReadStation.Helper.Enums.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using static ReadStation.Helper.Enums.Enums;
 namespace ReadStation.Models.Entities
 
 {
@@ -10,6 +11,8 @@ namespace ReadStation.Models.Entities
         public string Phone { get; set; }
         public int Age { get; set; }
         public DateTime Birthdate { get; set; }
+       
+        [EnumDataType(typeof(Gender))]
         public Gender Gender { get; set; }
         public string Password { get; set; }
         public DateTime RegistrationDate { get; set; }

@@ -21,8 +21,14 @@
         {
             Sales,
             Accounting,
-            CustomerService,
-            Management
+            CustomerService
+            
+        }
+        public enum DepartmentNameAr
+        {
+            المبيعات,
+            المحاسبة,
+            خدمة_العملاء
         }
 
         public enum ContentType 

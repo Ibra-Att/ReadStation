@@ -8,7 +8,9 @@ namespace ReadStation.Models.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<SubscriptionContent> builder)
         {
-            throw new NotImplementedException();
+            builder.ToTable("SubscriptionContent");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.IsActive).HasDefaultValue(true);
         }
     }
 }

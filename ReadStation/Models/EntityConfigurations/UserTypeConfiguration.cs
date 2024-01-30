@@ -8,7 +8,9 @@ namespace ReadStation.Models.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<UserType> builder)
         {
-            throw new NotImplementedException();
+            builder.ToTable("UserType");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.IsActive).HasDefaultValue(true);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace ReadStation.Models.Entities
     {
         public int Id { get; set; }
         public DepartmentName DepartmentName { get; set; }
+        public DepartmentNameAr DepartmentNameAr { get; set; }
         public bool IsActive { get; set; }
 
         // Relationships
