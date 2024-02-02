@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReadStation.Context;
 
@@ -11,9 +12,11 @@ using ReadStation.Context;
 namespace ReadStation.Migrations
 {
     [DbContext(typeof(ReadStationDbContext))]
-    partial class ReadStationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240131134047_V4")]
+    partial class V4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +63,7 @@ namespace ReadStation.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("PublishingDate")
+                    b.Property<DateTime>("PublicationDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -110,7 +113,7 @@ namespace ReadStation.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<int>("DownloadableContentPerMonth")
+                    b.Property<int?>("DownloadableContentPerMonth")
                         .HasColumnType("int");
 
                     b.Property<string>("DurationInDays")
@@ -129,14 +132,14 @@ namespace ReadStation.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("PricePerMonth")
-                        .HasColumnType("real");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("real")
+                        .HasDefaultValue(4.99f);
 
                     b.HasKey("Id");
 
                     b.ToTable("Subscription", null, t =>
                         {
-                            t.HasCheckConstraint("CH_Subscription_DownloadableContentPerMonth", "DownloadableContentPerMonth>=15");
-
                             t.HasCheckConstraint("CH_Subscription_PricePerMonth", "PricePerMonth>=4.99");
                         });
                 });
@@ -152,10 +155,17 @@ namespace ReadStation.Migrations
                     b.Property<int>("ContentId")
                         .HasColumnType("int");
 
+                    b.Property<int>("DownloadCount")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
+
+                    b.Property<string>("SelectedContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SubscriptionId")
                         .HasColumnType("int");
@@ -166,7 +176,10 @@ namespace ReadStation.Migrations
 
                     b.HasIndex("SubscriptionId");
 
-                    b.ToTable("SubscriptionContent", (string)null);
+                    b.ToTable("SubscriptionContent", null, t =>
+                        {
+                            t.HasCheckConstraint("CH_SubscriptionContent_DownloadCount", "DownloadCount>=0");
+                        });
                 });
 
             modelBuilder.Entity("ReadStation.Models.Entities.User", b =>
@@ -216,9 +229,7 @@ namespace ReadStation.Migrations
                         .HasColumnType("nvarchar(14)");
 
                     b.Property<DateTime>("RegistrationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 2, 2, 3, 47, 28, 757, DateTimeKind.Local).AddTicks(8492));
+                        .HasColumnType("datetime2");
 
                     b.Property<float?>("Salary")
                         .HasColumnType("real");
@@ -252,37 +263,6 @@ namespace ReadStation.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ReadStation.Models.Entities.UserContent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ContentCounter")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ContentId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContentId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserContent", (string)null);
-                });
-
             modelBuilder.Entity("ReadStation.Models.Entities.UserSubscription", b =>
                 {
                     b.Property<int>("Id")
@@ -290,9 +270,6 @@ namespace ReadStation.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DownloadCounter")
-                        .HasColumnType("int");
 
                     b.Property<int>("DurationInMonths")
                         .HasColumnType("int");
@@ -304,9 +281,6 @@ namespace ReadStation.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
-
-                    b.Property<int>("MembershipCounter")
-                        .HasColumnType("int");
 
                     b.Property<float>("NetPrice")
                         .HasColumnType("real");
@@ -336,8 +310,6 @@ namespace ReadStation.Migrations
 
                     b.ToTable("UserSubscription", null, t =>
                         {
-                            t.HasCheckConstraint("CH_SubscriptionContent_DownloadCounter", "DownloadCounter>=0");
-
                             t.HasCheckConstraint("CH_UserSubscription_DurationInMonths", "DurationInMonths<= 12");
 
                             t.HasCheckConstraint("CH_UserSubscription_NetPrice", "NetPrice>= 0");
@@ -406,25 +378,6 @@ namespace ReadStation.Migrations
                     b.Navigation("UserType");
                 });
 
-            modelBuilder.Entity("ReadStation.Models.Entities.UserContent", b =>
-                {
-                    b.HasOne("ReadStation.Models.Entities.Content", "Content")
-                        .WithMany("UserContents")
-                        .HasForeignKey("ContentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ReadStation.Models.Entities.User", "User")
-                        .WithMany("UserContents")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Content");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ReadStation.Models.Entities.UserSubscription", b =>
                 {
                     b.HasOne("ReadStation.Models.Entities.Subscription", "Subscription")
@@ -447,8 +400,6 @@ namespace ReadStation.Migrations
             modelBuilder.Entity("ReadStation.Models.Entities.Content", b =>
                 {
                     b.Navigation("SubscriptionContents");
-
-                    b.Navigation("UserContents");
                 });
 
             modelBuilder.Entity("ReadStation.Models.Entities.Department", b =>
@@ -465,8 +416,6 @@ namespace ReadStation.Migrations
 
             modelBuilder.Entity("ReadStation.Models.Entities.User", b =>
                 {
-                    b.Navigation("UserContents");
-
                     b.Navigation("UserSubscriptions");
                 });
 

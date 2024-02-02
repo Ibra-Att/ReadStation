@@ -42,8 +42,9 @@
         }
         public enum Category
         {
-            Nonfiction = 1000,
-            Documentary = 0,
+            None = 1000,
+            Nonfiction = 0,
+            Documentary ,
             Scientific,
             Sport,
             Novel,
@@ -57,7 +58,7 @@
             Standard = 0,
             Premium,
             Ultimate,
-            
+            Economy 
         }
 
         public enum DurationInDays

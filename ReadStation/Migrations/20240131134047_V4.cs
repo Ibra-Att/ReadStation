@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ReadStation.Migrations
 {
     /// <inheritdoc />
-    public partial class Version2 : Migration
+    public partial class V4 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,15 +19,17 @@ namespace ReadStation.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContentType = table.Column<int>(type: "int", nullable: false),
+                    ContentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Author = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PublicationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DownloadingCount = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Content", x => x.Id);
+                    table.CheckConstraint("CH_Content_DownloadingCount", "DownloadingCount>=0");
                 });
 
             migrationBuilder.CreateTable(
@@ -36,8 +38,8 @@ namespace ReadStation.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DepartmentName = table.Column<int>(type: "int", nullable: false),
-                    DepartmentNameAr = table.Column<int>(type: "int", nullable: false),
+                    DepartmentName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DepartmentNameAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
                 },
                 constraints: table =>
@@ -51,14 +53,17 @@ namespace ReadStation.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MembershipTier = table.Column<int>(type: "int", nullable: false),
+                    MembershipTier = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     PricePerMonth = table.Column<float>(type: "real", nullable: false, defaultValue: 4.99f),
+                    DownloadableContentPerMonth = table.Column<int>(type: "int", nullable: true),
+                    DurationInDays = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Thirty"),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Subscription", x => x.Id);
+                    table.CheckConstraint("CH_Subscription_PricePerMonth", "PricePerMonth>=4.99");
                 });
 
             migrationBuilder.CreateTable(
@@ -81,6 +86,8 @@ namespace ReadStation.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    SelectedContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DownloadCount = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     SubscriptionId = table.Column<int>(type: "int", nullable: false),
                     ContentId = table.Column<int>(type: "int", nullable: false)
@@ -88,6 +95,7 @@ namespace ReadStation.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SubscriptionContent", x => x.Id);
+                    table.CheckConstraint("CH_SubscriptionContent_DownloadCount", "DownloadCount>=0");
                     table.ForeignKey(
                         name: "FK_SubscriptionContent_Content_ContentId",
                         column: x => x.ContentId,
@@ -111,13 +119,13 @@ namespace ReadStation.Migrations
                     FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(14)", nullable: false),
-                    Age = table.Column<int>(type: "int", nullable: false, defaultValue: 18),
+                    Age = table.Column<int>(type: "int", nullable: false),
                     Birthdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: true),
-                    JobTitle = table.Column<int>(type: "int", nullable: true),
+                    JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Salary = table.Column<float>(type: "real", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     UserTypeId = table.Column<int>(type: "int", nullable: false)
@@ -125,8 +133,11 @@ namespace ReadStation.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
+                    table.CheckConstraint("CH_User_Age", "Age >= 1");
                     table.CheckConstraint("CH_User_Email", "EMAIL LIKE '%@___%.COM'");
+                    table.CheckConstraint("CH_User_FullName", "LEN(FullName) >= 5");
                     table.CheckConstraint("CH_User_Phone", "Phone LIKE '00%' AND LEN(Phone) = 14");
+                    table.CheckConstraint("CH_User_Salary", "Salary >= 260");
                     table.ForeignKey(
                         name: "FK_User_Department_DepartmentId",
                         column: x => x.DepartmentId,
@@ -146,10 +157,10 @@ namespace ReadStation.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Promotion = table.Column<float>(type: "real", nullable: false),
+                    Promotion = table.Column<float>(type: "real", nullable: false, defaultValue: 1f),
                     Price = table.Column<float>(type: "real", nullable: false),
                     NetPrice = table.Column<float>(type: "real", nullable: false),
-                    DurationInDays = table.Column<int>(type: "int", nullable: false),
+                    DurationInMonths = table.Column<int>(type: "int", nullable: false),
                     SubscriptionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
@@ -159,9 +170,10 @@ namespace ReadStation.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserSubscription", x => x.Id);
-                    table.CheckConstraint("CH_UserSubscription_DurationInDays", "DurationInDays<= 365");
+                    table.CheckConstraint("CH_UserSubscription_DurationInMonths", "DurationInMonths<= 12");
                     table.CheckConstraint("CH_UserSubscription_NetPrice", "NetPrice>= 0");
-                    table.CheckConstraint("CH_UserSubscription_Promotion", "Promotion<=0.50 ");
+                    table.CheckConstraint("CH_UserSubscription_Price", "Price>= 0");
+                    table.CheckConstraint("CH_UserSubscription_Promotion", "Promotion>=0.05 AND Promotion<=1 ");
                     table.ForeignKey(
                         name: "FK_UserSubscription_Subscription_SubscriptionId",
                         column: x => x.SubscriptionId,
