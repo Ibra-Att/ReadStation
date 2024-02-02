@@ -1,4 +1,7 @@
-﻿namespace ReadStation.Models.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using static ReadStation.Helper.Enums.Enums;
+
+namespace ReadStation.Models.Entities
 {
     public class SubscriptionContent
     {

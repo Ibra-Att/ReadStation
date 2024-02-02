@@ -17,7 +17,7 @@ namespace ReadStation.Models.Entities
         public string Password { get; set; }
         public DateTime RegistrationDate { get; set; }
         public int? DepartmentId { get; set; }
-        public int? JobTitle { get; set; }
+        public string? JobTitle { get; set; }
         public float? Salary { get; set; }
         public bool IsActive { get; set; }
 
@@ -26,6 +26,8 @@ namespace ReadStation.Models.Entities
         public virtual UserType UserType { get; set; }
         public virtual Department Department { get; set; }
         public virtual ICollection<UserSubscription> UserSubscriptions { get; set; }
+        public virtual ICollection<UserContent> UserContents { get; set; }
+
     }
 }
 

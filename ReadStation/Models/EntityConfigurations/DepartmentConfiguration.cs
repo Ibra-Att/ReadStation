@@ -11,6 +11,8 @@ namespace ReadStation.Models.EntityConfigurations
             builder.ToTable("Department");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.IsActive).HasDefaultValue(true);
+            builder.Property(x => x.DepartmentName).HasConversion<string>();
+            builder.Property(x => x.DepartmentNameAr).HasConversion<string>();
         }
     }
 }

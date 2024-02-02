@@ -25,6 +25,7 @@ namespace ReadStation.Context
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new UserSubscriptionConfiguration());
             modelBuilder.ApplyConfiguration(new UserTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new UserContentConfiguration());
 
 
 
@@ -40,6 +41,8 @@ namespace ReadStation.Context
         public virtual DbSet<Content> Contents { get; set; }
         public virtual DbSet<SubscriptionContent> SubscriptionContents { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<UserContent> UserContents { get; set; }
+
 
     }
 }
