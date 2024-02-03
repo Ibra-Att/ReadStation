@@ -131,13 +131,19 @@ namespace ReadStation.Controllers
         /// <response code="503">Server is Un Available</response>   
         /// <remarks>
         /// Sample request:
-        /// 
-        ///     Gender
-        ///     {        
-        ///     None = 1000,
-        ///     Male = 0,
-        ///     Female,
-        ///     }
+        /// Sample request:
+        /// {
+        ///"fullName": "Mohammad Mahmoud",
+        ///"email": "Moh89@yahoo.com",
+        ///"phone": "00962797416933",
+        ///"age": 35,
+        ///"birthdate": "1989-01-31",
+        ///"gender": "Male",         //or Female
+        ///"password": "wqeqwjhkkj32",
+        ///"departmentId": 1,        
+        ///"jobTitle": "sales agent",    
+        ///"salary": 260             
+        ///      }
         /// </remarks>
 
         [HttpPost]
@@ -156,20 +162,21 @@ namespace ReadStation.Controllers
             { return new ObjectResult(null) { StatusCode = 500, Value = $"Operation Failed  {e.Message}" }; }
         }
         /// <summary>
-        /// an action to Create a new user account
+        /// an action to add a new Subscription
         /// </summary>
-        /// <response code="200">Returns user created</response>
+        /// <response code="201">Returns Successfully added</response>
         /// <response code="400">Something Went Wrong</response>    
         /// <response code="503">Server is Un Available</response>   
         /// <remarks>
         /// Sample request:
         /// 
-        ///     CreateNewAccount sample
+        ///    sample
         ///     {        
-        ///       "Name": "Ibra att",
-        ///       "Email": "ibraatt@gmail.com", 
-        ///       "Password": ABC12345,
-        ///       "Phone" :962797458559
+        ///       "membershipTier": "Economy",
+        ///       "description": "budget", 
+        ///       "pricePerMonth": 4.99,
+        ///       "downloadableContentPerMonth" :15,
+        ///       "durationInDays":30
         ///     }
         /// </remarks>
 
@@ -189,20 +196,20 @@ namespace ReadStation.Controllers
             { return new ObjectResult(null) { StatusCode = 500, Value = $"Operation Failed  {e.Message}" }; }
         }
         /// <summary>
-        /// an action to Create a new user account
+        /// an action to let existed admin login
         /// </summary>
-        /// <response code="200">Returns user created</response>
+        /// <response code="200">Returns done</response>
         /// <response code="400">Something Went Wrong</response>    
         /// <response code="503">Server is Un Available</response>   
         /// <remarks>
         /// Sample request:
         /// 
-        ///     CreateNewAccount sample
+        ///      sample
         ///     {        
-        ///       "Name": "Ibra att",
+        ///       
         ///       "Email": "ibraatt@gmail.com", 
-        ///       "Password": ABC12345,
-        ///       "Phone" :962797458559
+        ///       "Password": "ABC12345",
+        ///      
         ///     }
         /// </remarks>
 
@@ -228,7 +235,7 @@ namespace ReadStation.Controllers
         #region Put requests
 
         /// <summary>
-        /// an action to Create a new user account
+        /// an action Update existed Admin's account
         /// </summary>
         /// <response code="200">Returns user created</response>
         /// <response code="400">Something Went Wrong</response>    
@@ -236,13 +243,20 @@ namespace ReadStation.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     CreateNewAccount sample
-        ///     {        
-        ///       "Name": "Ibra att",
-        ///       "Email": "ibraatt@gmail.com", 
-        ///       "Password": ABC12345,
-        ///       "Phone" :962797458559
-        ///     }
+        ///      sample
+        ///    {
+        ///"fullName": "Mohammad Mahmoud",
+        ///"email": "Moh89@yahoo.com",
+        ///"phone": "00962797416933",
+        ///"age": 35,
+        ///"birthdate": "1989-01-31",
+        ///"gender": "Male",         //or Female
+        ///"password": "wqeqwjhkkj32",
+        ///"departmentId": 0,        // u can keep it null
+        ///"jobTitle": "string",    // u can keep it null
+        ///"salary": 0,              // u can keep it null
+        ///"isActive": true
+        ///      }
         /// </remarks>
 
         [HttpPut]
@@ -261,20 +275,25 @@ namespace ReadStation.Controllers
             { return new ObjectResult(null) { StatusCode = 500, Value = $"update Failed {e.Message}" }; }
         }
         /// <summary>
-        /// an action to Create a new user account
+        /// an action to Update an existed Content
         /// </summary>
-        /// <response code="200">Returns user created</response>
+        /// <response code="200">Returns updated</response>
         /// <response code="400">Something Went Wrong</response>    
         /// <response code="503">Server is Un Available</response>   
         /// <remarks>
         /// Sample request:
         /// 
-        ///     CreateNewAccount sample
+        ///      sample:
         ///     {        
-        ///       "Name": "Ibra att",
-        ///       "Email": "ibraatt@gmail.com", 
-        ///       "Password": ABC12345,
-        ///       "Phone" :962797458559
+        ///       "name": ""One Piece",",
+        ///       "description": "Anime about pirates",
+        ///       "contentType": "Manga",
+        ///       "category": "Action",
+        ///       "author": "EIICHIRO ODA",
+        ///       "publishingDate": "1997-07-22",
+        ///       "downloadingCount": 1,
+        ///       "isActive": true
+        ///
         ///     }
         /// </remarks>
 
@@ -294,7 +313,7 @@ namespace ReadStation.Controllers
             { return new ObjectResult(null) { StatusCode = 500, Value = $"update Failed {e.Message}" }; }
         }
         /// <summary>
-        /// an action to Create a new user account
+        /// an action to Update existed Employee 
         /// </summary>
         /// <response code="200">Returns user created</response>
         /// <response code="400">Something Went Wrong</response>    
@@ -302,13 +321,20 @@ namespace ReadStation.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     CreateNewAccount sample
-        ///     {        
-        ///       "Name": "Ibra att",
-        ///       "Email": "ibraatt@gmail.com", 
-        ///       "Password": ABC12345,
-        ///       "Phone" :962797458559
-        ///     }
+        ///      sample
+        ///    {
+        ///"fullName": "Mohammad Mahmoud",
+        ///"email": "Moh89@yahoo.com",
+        ///"phone": "00962797416933",
+        ///"age": 35,
+        ///"birthdate": "1989-01-31",
+        ///"gender": "Male",         //or Female
+        ///"password": "wqeqwjhkkj32",
+        ///"departmentId": 1,        // u can keep it null
+        ///"jobTitle": "market agent",    // u can keep it null
+        ///"salary": 350,              // u can keep it null
+        ///"isActive": true
+        ///      }
         /// </remarks>
 
         [HttpPut]
@@ -327,20 +353,22 @@ namespace ReadStation.Controllers
             { return new ObjectResult(null) { StatusCode = 500, Value = $"update Failed {e.Message}" }; }
         }
         /// <summary>
-        /// an action to Create a new user account
+        /// an action to Update existed Subscription
         /// </summary>
-        /// <response code="200">Returns user created</response>
+        /// <response code="200">Returns updated</response>
         /// <response code="400">Something Went Wrong</response>    
         /// <response code="503">Server is Un Available</response>   
         /// <remarks>
         /// Sample request:
         /// 
-        ///     CreateNewAccount sample
+        ///    sample
         ///     {        
-        ///       "Name": "Ibra att",
-        ///       "Email": "ibraatt@gmail.com", 
-        ///       "Password": ABC12345,
-        ///       "Phone" :962797458559
+        ///       "membershipTier": "Economy",
+        ///       "description": "budget", 
+        ///       "pricePerMonth": 4.99,
+        ///       "downloadableContentPerMonth" :15,
+        ///       "durationInDays":30,
+        ///       "isActive":true
         ///     }
         /// </remarks>
 

@@ -2,7 +2,9 @@
 {
     public class DownloadContentDTO
     {
-        public int Id { get; set; }
+       // public int Id { get; set; }
+      // public string UserName { get; set; }
+    //    public string ContentName { get; set; }
         public int ContentCounter { get; set; } = 0;
         public bool IsActive { get; set; }
         public int UserId { get; set; }

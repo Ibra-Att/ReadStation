@@ -22,7 +22,7 @@ namespace ReadStation.Interfaces
         Task UpdateSubscription(UpdateSubscriptionDTO dto, int id);// done 100%
         //Admin Can Add Another Admin and can update his name and password
         Task AddAdmin(CreateEmployeeDTO dto); // done 100% 
-        Task UpdateAdmin(UpdateEmployeeDTO dto,int id); //done 90% except Gender as a name , recheck it
+        Task UpdateAdmin(UpdateEmployeeDTO dto,int id); //done 100%
 
 
 

@@ -17,7 +17,7 @@ namespace ReadStation.Interfaces
         // add UserSubscriptionInfo function
 
         //Client Shall be able to download any book if and only if he have a subscription 
-        Task ContentDownload(DownloadContentDTO dto); 
+        Task ContentDownload(DownloadContentDTO dto); // done 100% 
         
     }
 }
