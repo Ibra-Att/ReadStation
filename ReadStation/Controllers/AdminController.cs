@@ -392,6 +392,73 @@ namespace ReadStation.Controllers
         #endregion
         #region Delete requests
 
+        /// <summary>
+        ///  Delete any existed User, just enter his/her id
+        /// </summary>
+        /// <response code="200">Returns deleted</response>
+        /// <response code="400">Something Went Wrong</response>    
+        /// <response code="503">Server is Un Available</response>   
+        [HttpDelete]
+        [Route("[action]/{id}")]
+
+        public async Task<IActionResult> DeleteUserAction(int id)
+        {
+            try
+            {
+                await DeleteUser (id);
+                return new ObjectResult(null) { StatusCode = 200, Value = " Successfully deleted  " };
+
+            }
+
+            catch (Exception e)
+
+            { return new ObjectResult(null) { StatusCode = 500, Value = $"delete Failed {e.Message}" }; }
+
+        }
+        /// <summary>
+        ///  Delete any existed Subscription, just enter it's id
+        /// </summary>
+        /// <response code="200">Returns deleted</response>
+        /// <response code="400">Something Went Wrong</response>    
+        /// <response code="503">Server is Un Available</response>   
+        [HttpDelete]
+        [Route("[action]/{id}")]
+        public async Task<IActionResult> DeleteSubscriptionAction(int id)
+        {
+            try
+            {
+                await DeleteSubscription(id);
+                return new ObjectResult(null) { StatusCode = 200, Value = " Successfully deleted  " };
+
+            }
+
+            catch (Exception e)
+
+            { return new ObjectResult(null) { StatusCode = 500, Value = $"delete Failed {e.Message}" }; }
+        }
+        /// <summary>
+        ///  Delete any existed Content, just enter it's id
+        /// </summary>
+        /// <response code="200">Returns deleted</response>
+        /// <response code="400">Something Went Wrong</response>    
+        /// <response code="503">Server is Un Available</response>   
+        [HttpDelete]
+        [Route("[action]/{id}")]
+        public async Task<IActionResult> DeleteContentAction(int id)
+        {
+            try
+            {
+                await DeleteContent(id);
+                return new ObjectResult(null) { StatusCode = 200, Value = " Successfully deleted  " };
+
+            }
+
+            catch (Exception e)
+
+            { return new ObjectResult(null) { StatusCode = 500, Value = $"delete Failed {e.Message}" }; }
+        }
+
+
         #endregion
 
 
@@ -676,6 +743,35 @@ namespace ReadStation.Controllers
             {
                 throw new Exception($"Subscription with ID {id} not found");
             }
+        }
+        [NonAction]
+        public async Task DeleteUser(int id)
+        {
+
+            var entity = await _context.Users.FindAsync(id);
+            
+            _context.Remove(entity);
+            await _context.SaveChangesAsync();
+
+
+        }
+        [NonAction]
+
+        public async Task DeleteSubscription(int id)
+        {
+            var entity = await _context.Subscriptions.FindAsync(id);
+
+            _context.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+        [NonAction]
+
+        public async Task DeleteContent(int id)
+        {
+            var entity = await _context.Contents.FindAsync(id);
+
+            _context.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
 

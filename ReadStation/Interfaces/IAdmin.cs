@@ -15,11 +15,15 @@ namespace ReadStation.Interfaces
         //Admin  Shall be able to add / update / delete any employee or coach and department and remember each department must have Arabic name and English name 
         Task UpdateEmployee(UpdateEmployeeDTO dto, int id); //done 100%
 
+        
+
         //# Task AddDepartment and Update it
 
         //Admin shall be able to add / update / disactivate / reactivate subscription each subscriptions mush have (name , description , price , duration in day’s , Downloaded book amount)
         Task AddSubscription(CreateSubscriptionDTO dto);// done 100%
         Task UpdateSubscription(UpdateSubscriptionDTO dto, int id);// done 100%
+        Task DeleteSubscription(int id); //done 100%
+
         //Admin Can Add Another Admin and can update his name and password
         Task AddAdmin(CreateEmployeeDTO dto); // done 100% 
         Task UpdateAdmin(UpdateEmployeeDTO dto,int id); //done 100%
@@ -29,8 +33,11 @@ namespace ReadStation.Interfaces
         //Admin Shall be able to add Content such as book , story , magazine by adding (name , price ,description , ContentType)
         Task AddContent(CreateContentDTO dto); //done 100% 
         Task UpdateContent(UpdateContentDTO dto, int id); //done 100%
+        Task DeleteContent(int id);//done 100%
 
         //Admin Shall be able to login via email and password 
         Task AdminLogin(AdminLoginDTO dto); // done 90% except chk if admin
+
+        Task DeleteUser(int id); // done 100%
     }
 }
